@@ -1,0 +1,10 @@
+---
+# variables for databases defined in role/defaults are overridden
+# by the ones defined here
+app_name: {{cookiecutter.project_slug}}
+
+{% raw -%}
+db_name: "{{vault_db_name}}"
+db_user: "{{vault_db_user}}"
+db_password: "{{vault_db_password}}"
+{% endraw %}

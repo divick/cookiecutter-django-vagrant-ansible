@@ -1,0 +1,50 @@
+---
+- name: Make sure the sudo group is present
+  group:
+    name: sudo
+    state: present
+
+- name: Make sure the deploy group is present
+  group:
+    name: "{{deploy_group}}"
+    state: present
+
+- name: Make sure the deploy user is present
+  user:
+    name: "{{deploy_user}}"
+    state: present
+    group: "{{deploy_group}}"
+    system: yes
+
+- name: Add deploy user to groups sudo and deploy_group
+  user:
+    name: "{{ item }}"
+    groups: sudo,{{deploy_group}}
+    append: yes
+  with_items: "{{ deploy_user }}"
+  tags: ['setup', 'setup_deploy_user']
+
+- name: Allow 'sudo' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%sudo'
+    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+  tags: ['setup', 'setup_deploy_user']
+
+- name: Check shell
+  become: yes
+  become_user: "{{deploy_user}}"
+  shell: echo $0
+  register: sh
+  ignore_errors: True
+  tags: ['setup', 'setup_deploy_user', 'shell-setup']
+
+- debug:
+    msg="{{sh.stdout}}"
+
+- name: Change shell
+  command: "chsh -s /bin/bash {{ deploy_user }}"
+  when:
+    sh.stdout == '/bin/sh'
+  tags: ['setup', 'shell-setup']

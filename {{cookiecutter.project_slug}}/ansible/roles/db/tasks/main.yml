@@ -1,0 +1,36 @@
+---
+- name: Install postgres
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - postgresql
+    - python-psycopg2
+    - libpq-dev
+  tags: ['install', 'install-db']
+
+- name: Create Database
+  become: yes
+  become_user: postgres
+  become_method: sudo
+  postgresql_db: name={{ db_name }}
+  tags: ['install', 'install-db']
+
+- name: Create User
+  become: yes
+  become_user: postgres
+  become_method: sudo
+  postgresql_user:
+    name={{ db_user }}
+    password={{ db_password }}
+    state=present
+    role_attr_flags=NOSUPERUSER,CREATEDB
+  tags: ['install', 'install-db', 'setup-db-user']
+
+- name: Provide user with DB permissions
+  become: yes
+  become_user: postgres
+  become_method: sudo
+  postgresql_user:
+    user={{ db_user }}
+    db={{ db_name }}
+    priv=ALL
+  tags: ['install', 'install-db', 'setup-db-user']

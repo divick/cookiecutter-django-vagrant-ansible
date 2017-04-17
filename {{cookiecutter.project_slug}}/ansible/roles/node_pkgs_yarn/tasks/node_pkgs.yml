@@ -1,0 +1,6 @@
+---
+- name: Install node packages via yarn
+  shell: yarn install
+  args:
+    chdir: "{{ app_dir }}"
+  tags: ['install', 'install-node-pkgs']

@@ -1,0 +1,9 @@
+---
+
+- name: Clone git repo
+  git:
+    repo: "{{git_repo}}"
+    dest: /home/{{deploy_user}}/{{app_name}}
+    clone: yes
+    accept_hostkey: yes
+    key_file: /home/{{deploy_user}}/.ssh/id_rsa

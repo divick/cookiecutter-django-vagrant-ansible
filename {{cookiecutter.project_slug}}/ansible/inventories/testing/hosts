@@ -1,0 +1,9 @@
+[webservers]
+{% for webserver in cookiecutter.ansible.testing.webservers %}
+{{webserver.name}} ansible_host={{webserver.ip}} ansible_connection=ssh ansible_user=root
+{% endfor %}
+
+[dbservers]
+{% for dbserver in cookiecutter.ansible.testing.dbservers %}
+{{dbserver.name}} ansible_host={{dbserver.ip}} ansible_connection=ssh ansible_user=root
+{% endfor %}

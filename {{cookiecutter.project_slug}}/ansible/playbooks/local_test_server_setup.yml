@@ -1,0 +1,26 @@
+---
+# On ubuntu 16.04 the default python installation is python3
+# and since we want to run rest of the ansible tasks using
+# python2 using ansible_python_interpreter=/usr/bin/python3
+# does not work for us
+# Installs python2 which is required by ansible to gather facts.
+- hosts: all
+  gather_facts: False
+  roles:
+    - python2_install
+
+- hosts: dbservers
+  roles:
+    - db
+
+- hosts: webservers
+  roles:
+      - { role: base_packages }
+      - { role: create_user_and_groups }
+      - { role: copy_ssh_keys }
+      - { role: python_setup }
+      - { role: clone_git_repo, become: yes, become_user: "{{deploy_user}}" }
+      - { role: nodejs }
+      - { role: yarn }
+      - { role: nginx }
+      - { role: uwsgi }

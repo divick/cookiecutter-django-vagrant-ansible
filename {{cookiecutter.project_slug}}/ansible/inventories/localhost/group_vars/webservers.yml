@@ -1,0 +1,13 @@
+---
+app_name: "{{cookiecutter.project_slug}}"
+app_dir: /vagrant
+
+deploy_user: "{{cookiecutter.ansible.localhost.deploy_user}}"
+deploy_group: "{{cookiecutter.ansible.localhost.deploy_group}}"
+
+# For development setup we have wsgi and nginx disabled
+wsgi_enabled: no
+nginx_enabled: no
+
+# For local development we have debug = True in settings
+debug: True

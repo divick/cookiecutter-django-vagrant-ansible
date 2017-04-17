@@ -1,0 +1,4 @@
+{% for app in cookiecutter.ansible.requirements %}
+{{app}}
+{% endfor %}
+

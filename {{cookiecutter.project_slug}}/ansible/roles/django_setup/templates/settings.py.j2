@@ -1,0 +1,119 @@
+import os
+from common_settings import *
+
+DEBUG = {{debug}}
+COMPRESS_ENABLED = {{compress_enabled}}
+
+DOMAIN_NAME = "{{domain_name}}"
+
+ADMINS = (
+    ('Admin', 'admin@%s' % (DOMAIN_NAME)),
+)
+MANAGERS = ADMINS
+
+ALLOWED_HOSTS = [
+    # '*',
+    u"{{server_name}}",
+    '%s' % (DOMAIN_NAME),
+    'www.%s' % (DOMAIN_NAME),
+]
+
+
+# Make celery run in the same thread as request
+CELERY_ALWAYS_EAGER = True
+CELERY_DISABLE_RATE_LIMITS = True
+
+STATIC_ROOT = os.path.join(BASE_DIR, APP_NAME, 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, APP_NAME, 'media')
+
+APP_DB_NAME = "{{db_name}}"
+APP_DB_USER = "{{db_user}}"
+APP_DB_PASSWD = "{{db_password}}"
+APP_DB_HOST = "{{db_host}}"
+APP_DB_PORT = "{{db_port}}"
+
+DATABASES['default']['NAME'] = APP_DB_NAME
+DATABASES['default']['TEST_NAME'] = "test_{{APP_DB_NAME}}"
+DATABASES['default']['HOST'] = APP_DB_HOST
+DATABASES['default']['PORT'] = APP_DB_PORT
+DATABASES['default']['USER'] = APP_DB_USER
+DATABASES['default']['PASSWORD'] = APP_DB_PASSWD
+
+LOGGING['disable_existing_loggers'] = False
+
+EMAIL_BACKEND = 'django.core.mail.backends.{{email_backend}}'
+EMAIL_HOST = 'smtp.webfaction.com'
+#EMAIL_PORT = 587
+EMAIL_HOST_USER = "{{email_host_user}}"
+EMAIL_HOST_PASSWORD = "{{email_host_password}}"
+EMAIL_USE_TLS = True
+SERVER_EMAIL = 'admin@%s' % (DOMAIN_NAME)
+DEFAULT_FROM_EMAIL = 'Do not reply<noreply@%s>' % (DOMAIN_NAME)
+NOREPLY_EMAIL = '%s<noreply@%s>' % (APP_NAME, DOMAIN_NAME)
+CONTACTUS_EMAIL = 'contact@%s' % (DOMAIN_NAME)
+SUPPORT_EMAIL = 'support@%s' % (DOMAIN_NAME)
+
+USE_S3 = {{use_s3}}
+USE_S3_FOR_STATIC_FILES = {{use_s3_for_static_files}}
+USE_S3_FOR_MEDIA_FILES = {{use_s3_for_media_files}}
+USE_ANSIBLE_FOR_S3_UPLOADS = {{use_ansible_for_s3_uploads}}
+if USE_S3:
+    # Settings for AWS
+    AWS_STORAGE_BUCKET_NAME = "{{aws_storage_bucket_name}}"
+    AWS_ACCESS_KEY_ID = "{{aws_access_key_id}}"
+    AWS_SECRET_ACCESS_KEY = "{{aws_secret_access_key}}"
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    AWS_S3_SIGNATURE_VERSION = 's3v4'
+
+    if USE_S3_FOR_STATIC_FILES:
+        STATICFILES_LOCATION = 'static'
+        STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN,
+                                         STATICFILES_LOCATION)
+        COMPRESS_URL = STATIC_URL
+
+        # If we do not use s3_sync to upload static files then
+        # the files can be auto synced to s3 using django-storages'
+        # using a customized backend which also copies the static
+        # files to local machine.
+        if not USE_ANSIBLE_FOR_S3_UPLOADS:
+            STATICFILES_STORAGE = ("{{app_name}}.custom_storages"
+                                   ".StaticCachedS3Boto3Storage")
+            COMPRESS_STORAGE = STATICFILES_STORAGE
+
+    if USE_S3_FOR_MEDIA_FILES:
+        MEDIAFILES_LOCATION = 'media'
+        MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN,
+                                        MEDIAFILES_LOCATION)
+        DEFAULT_FILE_STORAGE = "{{app_name}}.custom_storages.MediaStorage"
+
+if (DEBUG):
+    MIDDLEWARE_CLASSES += (
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    )
+
+if DEBUG:
+    INSTALLED_APPS += [
+        'debug_toolbar']
+
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.logging.LoggingPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+]
+
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+    'JQUERY_URL': STATIC_URL + "bower_components/jquery/dist/jquery.min.js"
+}
+
+if DEBUG:
+    LOGGING['loggers']['']['handlers'] = ['console']

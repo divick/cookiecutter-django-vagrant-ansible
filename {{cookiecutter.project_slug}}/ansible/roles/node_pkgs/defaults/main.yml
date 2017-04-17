@@ -1,0 +1,4 @@
+app_name: app
+deploy_user: ubuntu
+app_dir: /home/{{deploy_user}}/{{app_name}}
+node_version: 6.9.5

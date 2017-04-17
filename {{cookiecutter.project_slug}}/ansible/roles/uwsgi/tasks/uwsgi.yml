@@ -1,0 +1,28 @@
+---
+- name: Install uwsgi
+  pip:
+    name: uwsgi
+    executable: pip2
+
+- name: Prepare run directories
+  file: state=directory path={{item.run_dir}} owner={{wsgi_user}} group={{wsgi_group}}
+  with_items: "{{wsgi_applications}}"
+
+- name: Prepare log directories
+  file: state=directory path={{item.log_dir|default(wsgi_log_dir)}} owner={{wsgi_user}} group={{wsgi_group}}
+  with_items: "{{wsgi_applications}}"
+
+- name: Create wsgi directory
+  file: state=directory path={{wsgi_etc_dir}}/sites owner={{wsgi_user}} group={{wsgi_group}}
+
+- name: Setup uwsgi
+  template: src=uwsgi.ini.j2 dest={{wsgi_etc_dir}}/sites/{{app_name}}_uwsgi.ini owner={{wsgi_user}} group={{wsgi_group}}
+  with_items: "{{wsgi_applications}}"
+  notify: restart wsgi
+
+- name: Setup wsgi service
+  template: src=uwsgi.systemd.service.j2 dest=/etc/systemd/system/{{wsgi_service_name}} owner=root group=root mode=0644
+  with_items: "{{wsgi_applications}}"
+
+- name: Ensure wsgi service is started
+  service: name={{wsgi_service_name}} state=started enabled=yes

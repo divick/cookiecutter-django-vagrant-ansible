@@ -1,0 +1,57 @@
+---
+app_name: {{cookiecutter.project_slug}}
+domain_name: {{cookiecutter.ansible.localhost_testing.domain_name}}
+
+deploy_user: {{cookiecutter.ansible.localhost_testing.deploy_user}}
+deploy_group: {{cookiecutter.ansible.localhost_testing.deploy_group}}
+
+local_user: {{cookiecutter.ansible.localhost_testing.local_user}}
+
+git_repo: {{cookiecutter.ansible.localhost_testing.git_repo}}
+
+use_s3: {{cookiecutter.ansible.localhost_testing.use_s3}}
+use_s3_for_static_files: {{cookiecutter.ansible.localhost_testing.use_s3_for_static_files}}
+use_s3_for_media_files: {{cookiecutter.ansible.localhost_testing.use_s3_for_media_files}}
+
+{% raw -%}
+app_dir: /home/{{deploy_user}}/{{app_name}}
+
+#############################################################
+# variables to generate settings file
+#############################################################
+debug: False
+compress_enabled: True
+
+static_root: "{{app_dir}}/{{app_name}}/static"
+media_root: "{{app_dir}}/{{app_name}}/media"
+
+email_backend: smtp.EmailBackend
+# Secret variables loaded from vault
+email_host_user: "{{vault_email_host_user}}"
+email_host_password: init1234
+aws_access_key_id: "{{vault_aws_access_key_id}}"
+aws_secret_access_key: "{{vault_aws_secret_access_key}}"
+aws_storage_bucket_name: "{{vault_aws_storage_bucket_name}}"
+
+use_s3: "{{use_s3}}"
+use_s3_for_static_files: "{{use_s3_for_static_files}}"
+use_s3_for_media_files: "{{use_s3_for_media_files}}"
+use_ansible_for_s3_uploads: False
+
+db_name: "{{vault_db_name}}"
+db_user: "{{vault_db_user}}"
+db_password: "{{vault_db_password}}"
+#############################################################
+
+wsgi_applications:
+- name: "{{app_name}}"
+  nginx_servernames: 192.168.10.30
+  nginx_static_locations:
+      /media: "{{media_root}}"
+      /static: "{{static_root}}"
+  port: 80
+  ssl: true
+  log_dir: /var/log/uwsgi/{{app_name}}
+  run_dir: /run/uwsgi/{{app_name}}
+  max_upload_size: 15M
+{%- endraw %}

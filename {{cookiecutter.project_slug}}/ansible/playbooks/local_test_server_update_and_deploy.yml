@@ -1,0 +1,3 @@
+---
+- include : local_test_server_update.yml
+- include : local_test_server_deploy.yml

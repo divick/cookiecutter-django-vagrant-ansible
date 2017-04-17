@@ -1,0 +1,180 @@
+{
+  "full_name": "Divick Kishore",
+  "email": "divick.kishore@gmail.com",
+  "github_username": "divick",
+  "project_name": "cookiecutter django vagrant ansible",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+  "project_short_description": "Cookiecutter Django App contains all the boilerplate you need to create a Django application with Vagrant for local development and ansible for deployment to both Vagrant local setup as well as on testing and production environments.",
+  "pypi_username": "{{ cookiecutter.github_username }}",
+  "version": "0.1.0",
+  "use_pytest": "n",
+  "use_pypi_deployment_with_travis": "y",
+  "create_author_file": "y",
+  "open_source_license": ["MIT license", "BSD license", "ISC license",
+      "Apache Software License 2.0", "GNU General Public License v3",
+      "Not open source"],
+  "vagrant": {
+      "full_path_to_vagrant_box": "file:///home/ubuntu/boxes/xenial64.box",
+      "dev": {
+          "box_name": "django_dev_1",
+          "memory": 512,
+          "forwarded_port": {
+              "guest": 8080,
+              "host": 8080
+          },
+          "private_network": {
+              "enabled": "y",
+              "ip": "192.168.10.20"
+          }
+      },
+      "testing": {
+          "box_name": "web01_1",
+          "memory": 512,
+          "forwarded_port": {
+              "guest": 8000,
+              "host": 80
+          },
+          "private_network": {
+              "enabled": "y",
+              "ip": "192.168.10.30"
+          }
+      }
+  },
+  "ansible": {
+      "use_allauth": "y",
+      "custom_user_model": "y",
+      "my_apps": ["users", "blog"],
+      "requirements": [
+          "ansible==2.2.1.0",
+          "Django==1.10.7",
+          "django-storages==1.5.2",
+          "boto3==1.4.4",
+          "Pillow==3.4.1",
+          "psycopg2==2.6.2",
+          "django-allauth==0.27.0",
+          "git+https://github.com/hovel/imagestore.git@master",
+          "sorl-thumbnail==12.4a1",
+          "django-settings-export==1.2.1",
+          "django-filter==0.15.2",
+          "django-phonenumber-field==1.1.0",
+          "django-countries==4.0",
+          "django-bootstrap3==8.2.1",
+          "django-simple-captcha==0.5.3",
+          "django-tinymce==2.6.0",
+          "django-compressor==2.1",
+          "csscompressor==0.9.4",
+          "django-extensions==1.7.4",
+          "django-newsletter==0.6",
+          "django-simple-poll==0.2.1",
+          "django-admin-bootstrapped==2.5.7",
+          "git+https://github.com/django-admin-bootstrapped/django-admin-bootstrapped.git",
+          "librabbitmq==1.6.1",
+          "celery==4.0.2",
+          "django-analytical==2.2.2",
+          "django-debug-toolbar==1.6",
+          "django-nose==1.4.4",
+          "model-mommy==1.3.0",
+          "pep8==1.7.0",
+          "autopep8==1.2.4",
+          "pylint==1.6.4",
+          "pylint-django==0.7.2",
+          "Fabric==1.12.0",
+          "supervisor==3.3.1",
+          "sendgrid-django==4.0.1",
+          "ipython==5.1.0"
+      ],
+      "requirements_dev": [
+      ],
+      "installed_apps": [
+          "django.contrib.sitemaps",
+          "django_admin_bootstrapped",
+          "django.contrib.admin",
+          "django.contrib.auth",
+          "django.contrib.contenttypes",
+          "django.contrib.messages",
+          "django.contrib.staticfiles",
+          "django.contrib.sites",
+          "storages",
+          "django_countries",
+          "imagestore",
+          "sorl.thumbnail",
+          "tagging",
+          "captcha",
+          "bootstrap3",
+          "django_filters",
+          "allauth",
+          "allauthaccount",
+          "allauth.socialaccount",
+          "tinymce",
+          "compressor",
+          "analytical",
+          "django_nose",
+          "django_extensions",
+          "django_admin_bootstrapped"
+      ],
+      "localhost": {
+          "deploy_user": "ubuntu",
+          "deploy_group": "ubuntu",
+          "db_name": "{{cookiecutter.project_slug}}",
+          "db_user": "{{cookiecutter.project_slug}}_admin",
+          "db_password": "init123",
+          "use_s3": "n",
+          "use_s3_for_media_files": "n",
+          "use_s3_for_static_files": "n",
+          "server_names": []
+      },
+      "localhost_testing": {
+          "git_repo": "",
+          "local_user": "ubuntu",
+          "deploy_user": "ubuntu",
+          "deploy_group": "ubuntu",
+          "db_name": "{{cookiecutter.project_slug}}",
+          "db_user": "{{cookiecutter.project_slug}}_admin",
+          "db_password": "init123",
+          "email_host_user": "",
+          "email_host_password": "",
+          "domain_name": "example.com",
+          "server_names": [],
+          "use_s3": "y",
+          "use_s3_for_media_files": "y",
+          "use_s3_for_static_files": "n",
+          "aws_access_key": "",
+          "aws_secret_key": "",
+          "aws_s3_bucket_name": ""
+      },
+      "testing": {
+          "git_repo": "",
+          "local_user": "ubuntu",
+          "deploy_user": "ubuntu",
+          "deploy_group": "ubuntu",
+          "db_name": "{{cookiecutter.project_slug}}",
+          "db_user": "{{cookiecutter.project_slug}}_admin",
+          "db_password": "init123",
+          "email_host_user": "",
+          "email_host_password": "",
+          "domain_name": "test.example.com",
+          "server_names": ["test.example.com"],
+          "webservers": [
+              {"name": "webserver-1", "ip": ""}
+          ],
+          "dbservers": [
+              {"name": "dbserver-1", "ip": ""}
+          ],
+          "use_s3": "y",
+          "use_s3_for_media_files": "y",
+          "use_s3_for_static_files": "n",
+          "aws_access_key": "",
+          "aws_secret_key": "",
+          "aws_s3_bucket_name": ""
+      },
+      "staging": {
+      },
+      "production": {
+      }
+  },
+  "_copy_without_render": [
+      "ansible/playbooks",
+      "ansible/roles"
+  ],
+  "command_line_interface": ["Click", "No command-line interface"]
+}

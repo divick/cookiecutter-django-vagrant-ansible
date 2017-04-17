@@ -1,0 +1,10 @@
+---
+
+- name: Install pip packages
+  register: pip
+  pip:
+    requirements: "{{app_dir}}/requirements.txt"
+    virtualenv: /home/{{deploy_user}}/Env/{{app_name}}/
+  tags: ['setup', 'install-pip-pkgs']
+
+- debug: var=pip.stdout_lines

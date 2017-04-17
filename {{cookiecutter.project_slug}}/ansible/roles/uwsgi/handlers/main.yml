@@ -1,0 +1,15 @@
+---
+# We explicitly escalate privilege because the handlers here
+# are also run by other roles which only include this handler
+# file
+- name: restart wsgi
+  become: yes
+  become_user: root
+  service: name={{wsgi_service_name}} state=restarted
+  when: wsgi_enabled
+
+- name: reload wsgi
+  become: yes
+  become_user: root
+  service: name={{wsgi_service_name}} state=reloaded
+  when: wsgi_enabled

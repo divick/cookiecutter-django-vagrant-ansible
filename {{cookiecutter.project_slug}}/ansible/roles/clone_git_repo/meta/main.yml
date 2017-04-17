@@ -1,0 +1,4 @@
+---
+
+dependencies:
+  - { role: 'base_packages', 'copy_ssh_keys' }

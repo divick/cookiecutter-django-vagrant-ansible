@@ -1,0 +1,7 @@
+---
+
+# variables for postgres
+app_name: app
+db_name: "{{app_name}}"
+db_user: "{{app_name}}_admin"
+db_password: init123

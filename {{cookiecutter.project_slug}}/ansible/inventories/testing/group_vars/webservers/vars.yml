@@ -1,0 +1,38 @@
+---
+app_name: {{cookiecutter.project_slug}}
+domain_name: {{cookiecutter.ansible.testing.domain_name}}
+
+deploy_user: {{cookiecutter.ansible.testing.deploy_user}}
+deploy_group: {{cookiecutter.ansible.testing.deploy_group}}
+
+local_user: {{cookiecutter.ansible.testing.local_user}}
+
+git_repo: {{cookiecutter.ansible.testing.git_repo}}
+
+use_s3: {{cookiecutter.ansible.localhost_testing.use_s3}}
+use_s3_for_static_files: {{cookiecutter.ansible.localhost_testing.use_s3_for_static_files}}
+use_s3_for_media_files: {{cookiecutter.ansible.localhost_testing.use_s3_for_media_files}}
+
+{% raw -%}
+app_dir: /home/{{deploy_user}}/{{app_name}}
+static_root: "{{ app_dir }}/{{app_name}}/static"
+media_root: "{{app_dir}}/{{app_name}}/media"
+
+local_static_root: /home/{{local_user}}/work/{{app_name}}/{{app_name}}/static
+
+# Secret variables loaded from vault
+email_host_user: "{{vault_email_host_user}}"
+email_host_password: init1234
+aws_access_key_id: "{{vault_aws_access_key_id}}"
+aws_secret_access_key: "{{vault_aws_secret_access_key}}"
+aws_storage_bucket_name: "{{vault_aws_storage_bucket_name}}"
+
+use_s3: "{{use_s3}}"
+use_s3_for_static_files: "{{use_s3_for_static_files}}"
+use_s3_for_media_files: "{{use_s3_for_media_files}}"
+use_ansible_for_s3_uploads: False
+
+db_name: "{{vault_db_name}}"
+db_user: "{{vault_db_user}}"
+db_password: "{{vault_db_password}}"
+{%- endraw %}

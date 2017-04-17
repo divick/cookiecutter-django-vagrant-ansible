@@ -1,0 +1,4 @@
+---
+# defaults file for nodejs
+nodejs_enabled: yes
+noderepo: node_6.x

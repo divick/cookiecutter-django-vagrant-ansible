@@ -1,0 +1,5 @@
+---
+# tasks file for node_pkgs_yarn
+- include: node_pkgs.yml
+  when: yarn_enabled
+  tags: [yarn-pkgs]

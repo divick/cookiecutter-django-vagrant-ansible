@@ -1,0 +1,4 @@
+---
+- include: yarn.yml
+  when: yarn_enabled
+  tags: [yarn]

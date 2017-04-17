@@ -1,0 +1,5 @@
+---
+# tasks file for bower_pkgs_yarn
+- include: bower_pkgs.yml
+  when: bower_enabled
+  tags: [bower-pkgs]

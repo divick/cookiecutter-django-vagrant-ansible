@@ -1,0 +1,8 @@
+---
+
+- name: Install bower packages
+  shell: source /home/{{deploy_user}}/.nvm/nvm.sh && nvm use {{ node_version }} && bower install
+  args:
+    executable: /bin/bash
+    chdir: "{{ app_dir }}"
+  tags: ['install', 'install-bower-pkgs']

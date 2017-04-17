@@ -1,0 +1,4 @@
+---
+
+dependencies:
+  - { role: 'update_git_repo' }

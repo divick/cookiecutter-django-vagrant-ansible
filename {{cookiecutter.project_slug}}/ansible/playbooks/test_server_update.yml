@@ -1,0 +1,6 @@
+- hosts: webservers
+  roles:
+      - { role: update_git_repo, become: yes, become_user: "{{deploy_user}}" }
+      - { role: node_pkgs_yarn, become: yes, become_user: "{{deploy_user}}" }
+      - { role: bower_pkgs_yarn, become: yes, become_user: "{{deploy_user}}" }
+      - { role: pip_pkgs, become: yes, become_user: "{{deploy_user}}" }

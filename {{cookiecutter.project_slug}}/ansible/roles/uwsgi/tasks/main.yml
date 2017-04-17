@@ -1,0 +1,31 @@
+---
+- include: uwsgi.yml
+  when: wsgi_enabled
+  tags: [setup, uwsgi]
+
+- name: Copy nginx app configuration
+  template: src=nginx_app.conf.j2 dest={{nginx_dir}}/sites-available/{{item.name}}-nginx.conf owner={{wsgi_user}} group={{wsgi_group}}
+  with_items: "{{wsgi_applications}}"
+  notify: restart nginx
+  tags: [setup, uwsgi]
+
+- name: Enable nginx site for all configured wsgi apps
+  file:
+    src: "{{nginx_dir}}/sites-available/{{item.name}}-nginx.conf"
+    dest: "{{nginx_dir}}/sites-enabled/{{item.name}}-nginx.conf"
+    owner: "{{nginx_user}}"
+    group: "{{nginx_user}}"
+    state: link
+  with_items: "{{wsgi_applications}}"
+  tags: [setup, uwsgi]
+
+- name: Prepare log directories for wsgi apps
+  file: state=directory path={{item.log_dir|default(wsgi_log_dir)}} owner={{wsgi_user}} group={{wsgi_group}}
+  with_items: "{{wsgi_applications}}"
+  tags: [setup, uwsgi]
+
+- name: Configure log rotation for wsgi apps
+  template: src=logrotate.conf.j2 dest=/etc/logrotate.d/{{item.name}}-wsgi.conf
+  when: wsgi_log_rotate
+  with_items: "{{wsgi_applications}}"
+  tags: [setup, uwsgi, wsgi-logrotate]

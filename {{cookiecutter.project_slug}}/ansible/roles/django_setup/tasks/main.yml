@@ -1,0 +1,66 @@
+---
+- name: Setup link to app dir
+  file:
+    src: /vagrant
+    dest: ~/"{{app_name}}"
+    owner: "{{user}}"
+    group: "{{user}}"
+    state: link
+  when: debug
+  tags: ['setup', 'django-deploy']
+
+- name: Create settings file
+  template:
+    src: settings.py.j2
+    dest: "{{app_dir}}/{{app_name}}/settings.py"
+    owner: "{{deploy_user}}"
+    group: "{{deploy_group}}"
+  tags: ['deploy', 'django-deploy', 'settings-create']
+
+- name: Run migrations
+  django_manage:
+    command: migrate
+    virtualenv: /home/{{deploy_user}}/Env/{{app_name}}/
+    app_path: "{{ app_dir}}"
+  register: migrate
+  tags: ['deploy', 'django-deploy', 'migrate']
+
+- name: Preprocess js, scss and css files
+  shell: yarn run gulp compile
+  args:
+    executable: /bin/bash
+    chdir: "{{ app_dir }}"
+  when: not use_s3_for_static_files
+  tags: ['deploy', 'django-deploy', 'gulp-compile']
+
+- name: Collect static files
+  django_manage:
+    command: collectstatic --noinput
+    virtualenv: /home/{{deploy_user}}/Env/{{app_name}}/
+    app_path: "{{ app_dir}}"
+  register: collectstatic
+  notify:
+    - reload uwsgi
+  when: not use_s3_for_static_files
+  tags: ['deploy', 'django-deploy', 'collectstatic']
+
+- name: Compress offline js, css files
+  django_manage:
+    command: compress
+    virtualenv: /home/{{deploy_user}}/Env/{{app_name}}/
+    app_path: "{{ app_dir}}"
+  register: compress
+  when: not use_s3_for_static_files
+  tags: ['deploy', 'django-deploy', 'compress']
+
+#- name: Copy locally collected static files to S3
+#  s3_sync:
+#    bucket: "{{aws_storage_bucket_name}}"
+#    aws_access_key: "{{aws_access_key_id}}"
+#    aws_secret_key: "{{aws_secret_access_key}}"
+#    file_root: "{{static_root}}"
+#    mode: push
+#    include: "*"
+#    #exclude: "*.txt,.*"
+#  when: use_s3_for_static_files and use_ansible_for_s3_uploads
+#  tags: ['deploy', 'django-deploy', 's3_sync']

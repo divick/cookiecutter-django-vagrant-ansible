@@ -1,0 +1,9 @@
+---
+
+# Including handlers here as marking this role dependent on
+# the roles containing the following handlers also runs the
+# roles this role is dependent upon.
+# See: http://stackoverflow.com/questions/22649333/ansible-notify-handlers-in-another-role/
+# for a discussion on this issue
+- include: ../roles/nginx/handlers/main.yml
+- include: ../roles/uwsgi/handlers/main.yml

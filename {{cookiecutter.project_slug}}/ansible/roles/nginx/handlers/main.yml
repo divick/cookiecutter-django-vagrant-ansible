@@ -1,0 +1,13 @@
+---
+# We explicitly escalate privilege because the handlers here
+# are also run by other roles which only include this handler
+# file
+- name: restart nginx
+  become: yes
+  become_user: root
+  service: name={{nginx_service_name}} state=restarted
+
+- name: reload nginx
+  become: yes
+  become_user: root
+  service: name={{nginx_service_name}} state=reloaded

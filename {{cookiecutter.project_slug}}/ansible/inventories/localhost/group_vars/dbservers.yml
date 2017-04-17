@@ -1,0 +1,7 @@
+---
+# variables for databases defined in role/defaults are overridden
+# by the ones defined here
+app_name: "{{cookiecutter.project_slug}}"
+db_name: "{{cookiecutter.ansible.localhost.db_name}}"
+db_user: "{{cookiecutter.ansible.localhost.db_user}}"
+db_password: "{{cookiecutter.ansible.localhost.db_password}}"

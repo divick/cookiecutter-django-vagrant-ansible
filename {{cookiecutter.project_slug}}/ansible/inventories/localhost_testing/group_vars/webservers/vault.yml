@@ -1,0 +1,12 @@
+vault_db_name: "{{cookiecutter.ansible.localhost_testing.db_name}}"
+vault_db_user: "{{cookiecutter.ansible.localhost_testing.db_user}}"
+vault_db_password: "{{cookiecutter.ansible.localhost_testing.db_password}}"
+
+vault_email_host_user: "{{cookiecutter.ansible.localhost_testing.email_host_user}}"
+vault_email_host_password: "{{cookiecutter.ansible.localhost_testing.email_host_password}}"
+
+{% if cookiecutter.ansible.localhost_testing.use_s3 == "y" %}
+vault_aws_access_key_id: "{{cookiecutter.ansible.localhost_testing.aws_access_key}}"
+vault_aws_secret_access_key: "{{cookiecutter.ansible.localhost_testing.aws_secret_key}}"
+vault_aws_storage_bucket_name: "{{cookiecutter.ansible.localhost_testing.aws_s3_bucket_name}}"
+{% endif %}

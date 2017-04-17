@@ -1,0 +1,32 @@
+---
+
+- stat:
+    path: /home/{{deploy_user}}/.nvm/.git
+  register: nvm_dir
+  tags: ['install', 'nvm-setup']
+
+- debug: msg="{{nvm_dir.stat}}"
+  when: nvm_dir.stat is defined
+
+- name: Install nvm
+  shell: git clone https://github.com/creationix/nvm.git /home/{{deploy_user}}/.nvm && cd /home/{{deploy_user}}/.nvm && git checkout `git describe --abbrev=0 --tags`
+  when: not nvm_dir.stat.exists
+  tags: ['install', 'nvm-setup']
+
+- name: Check nvm present
+  shell: source /home/{{deploy_user}}/.nvm/nvm.sh && nvm
+  args:
+    executable: /bin/bash
+  register: nvm
+  ignore_errors: True
+  tags: ['install', 'nvm-setup']
+
+- name: Setup nvm directory
+  blockinfile:
+    dest: /home/{{deploy_user}}/.bashrc
+    block: |
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    state: present
+  #when: nvm|failed
+  tags: ['install', 'nvm-setup']

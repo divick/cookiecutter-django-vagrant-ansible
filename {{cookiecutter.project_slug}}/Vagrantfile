@@ -1,0 +1,99 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+    config.vm.define "{{cookiecutter.vagrant.dev.box_name}}", primary: true do |django_dev|
+        django_dev.vm.box = "ubuntu/xenial64"
+        #config.vm.box_version = "1.1.0"
+        config.vm.box_url = "file://{{cookiecutter.vagrant.full_path_to_vagrant_box}}"
+
+        # Disable automatic box update checking. If you disable this, then
+        # boxes will only be checked for updates when the user runs
+        # `vagrant box outdated`. This is not recommended.
+        # config.vm.box_check_update = false
+        django_dev.vm.network "forwarded_port", guest: {{cookiecutter.vagrant.dev.forwarded_port.guest}}, host: {{cookiecutter.vagrant.dev.forwarded_port.host}}
+
+        # Create a private network, which allows host-only access to the
+        # machine using a specific IP.
+        {% if cookiecutter.vagrant.dev.private_network.enabled == "y" %}
+        django_dev.vm.network "private_network", ip: "{{cookiecutter.vagrant.dev.private_network.ip}}"
+        {% endif %}
+
+        # Create a public network, which generally matched to bridged network.
+        # Bridged networks make the machine appear as another physical device
+        # on your network.
+        # config.vm.network "public_network"
+
+        # Share an additional folder to the guest VM. The first argument is
+        # the path on the host to the actual folder. The second argument is
+        # the path on the guest to mount the folder. And the optional third
+        # argument is a set of non-required options.
+        #config.vm.synced_folder "../data", "/vagrant_data"
+
+        # Provider-specific configuration so you can fine-tune various
+        # backing providers for Vagrant. These expose provider-specific options.
+        django_dev.vm.provider "virtualbox" do |vb|
+          # Display the VirtualBox GUI when booting the machine
+          #vb.gui = true
+
+          # Customize the amount of memory on the VM:
+          vb.memory = "{{cookiecutter.vagrant.dev.memory}}"
+
+          # Set name
+          vb.name = "{{cookiecutter.vagrant.dev.box_name}}"
+        end
+
+        # Run Ansible from the Vagrant VM instead of from the host
+        # We do this because:
+        # 1. VM already syncs the folder containing Vagrantfile to
+        #    /vagrant on guest machine.
+        # 2. For local development, we don't git pull the sources
+        #    from anywhere.
+        django_dev.vm.provision "ansible_local" do |ansible|
+            ansible.playbook = "/vagrant/ansible/playbooks/local_dev_server_playbook.yml"
+            ansible.config_file = "/vagrant/ansible.cfg"
+            ansible.inventory_path = "/vagrant/ansible/inventories/localhost/hosts"
+            ansible.limit = "all"
+            ansible.verbose = true
+        end
+    end
+
+    config.vm.define "{{cookiecutter.vagrant.testing.box_name}}", autostart: false do |web01|
+        web01.vm.box = "ubuntu/xenial64"
+        config.vm.box_url = "file://{{cookiecutter.vagrant.full_path_to_vagrant_box}}"
+
+        web01.vm.network "forwarded_port", guest: {{cookiecutter.vagrant.testing.forwarded_port.guest}}, host: {{cookiecutter.vagrant.testing.forwarded_port.host}}
+        web01.vm.network "forwarded_port", guest: 80, host: 8000
+        {% if cookiecutter.vagrant.dev.private_network.enabled == "y" %}
+        web01.vm.network "private_network", ip: "{{cookiecutter.vagrant.testing.private_network.ip}}"
+        {% endif %}
+
+        web01.vm.provider "virtualbox" do |vb|
+          # Customize the amount of memory on the VM:
+          vb.memory = "{{cookiecutter.vagrant.testing.memory}}"
+
+          # Set name
+          vb.name = "{{cookiecutter.vagrant.testing.box_name}}"
+        end
+
+        # Run Ansible from host instead of from within vagrant box
+        # We do this because:
+        # 1. The ansible copy module looks for file locally on
+        #    vagrant box which it is unable to find when vagrant
+        #    box is provisioned using 'ansible_local'.
+        # 2. We want to simulate the deployment scenario on
+        #    digital ocean droplet 16.04
+        web01.vm.provision "ansible" do |ansible|
+            ansible.playbook = "ansible/playbooks/local_test_server_playbook.yml"
+            ansible.config_file = "ansible.cfg"
+            ansible.ask_vault_pass = true
+            ansible.inventory_path = "ansible/inventories/localhost_testing/hosts"
+            ansible.limit = "all"
+            ansible.verbose = true
+        end
+    end
+end

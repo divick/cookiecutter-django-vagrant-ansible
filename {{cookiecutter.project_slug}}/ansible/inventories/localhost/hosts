@@ -1,0 +1,5 @@
+[webservers]
+localhost   ansible_connection=local ansible_user=ubuntu ansible_become=True ansible_become_method=sudo
+
+[dbservers]
+localhost   ansible_connection=local

@@ -1,0 +1,42 @@
+app_name: app
+app_dir: /home/{{deploy_user}}/{{app_name}}
+deploy_user: ubuntu
+deploy_group: ubuntu
+
+#############################################################
+# variables to generate settings file
+#############################################################
+debug: False
+compress_enabled: True
+
+domain_name: "localhost"
+server_name: localhost
+
+static_root: "{{ app_dir }}/{{app_name}}/static"
+media_root: "{{app_dir}}/{{app_name}}/media"
+
+use_s3: False
+use_s3_for_static_files: False
+use_s3_for_media_files: False
+use_ansible_for_s3_uploads: False
+aws_storage_bucket_name:
+aws_access_key_id:
+aws_secret_access_key:
+
+email_backend: console.EmailBackend
+email_host_user:
+email_host_password:
+
+db_name: "{{vault_db_name}}"
+db_host: localhost
+db_port:
+db_user: "{{vault_db_user}}"
+db_password: "{{vault_db_password}}"
+#############################################################
+
+# We define these variables because we include the handler
+# for ngix and uwsgi from this role's handler and just
+# including the handler does not know about the default
+# variables defined in the other role
+nginx_service_name: nginx.service
+wsgi_service_name: uwsgi.service

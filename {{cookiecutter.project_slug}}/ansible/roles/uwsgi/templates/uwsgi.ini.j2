@@ -1,0 +1,27 @@
+
+{% set app = item %}
+
+[uwsgi]
+project = {{app_name}}
+uid = {{deploy_user}}
+base = /home/%(uid)
+
+chdir = %(base)/%(project)
+home = %(base)/Env/%(project)
+#module = %(project)/%(project).wsgi:application
+wsgi-file = %(base)/%(project)/%(project)/wsgi.py
+
+master = true
+processes = {{app.uwsgi_processes|default(wsgi_uwsgi_processes)}}
+enable-threads = {{ 'true' if wsgi_uwsgi_enable_threads else 'false' }}
+max-requests = {{wsgi_uwsgi_max_requests}}
+no-orphans = {{ 'true' if wsgi_uwsgi_no_orphans else 'false' }}
+
+logto = {{app.log_dir|default(wsgi_log_dir)}}/{{app_name}}-uwsgi.log
+logfile-chown = %(uid)
+
+# Finish off the configuration with the following lines
+socket = {{app.run_dir|default(wsgi_run_dir)}}/%(project).sock
+chown-socket = %(uid):www-data
+chmod-socket = 660
+vacuum = true

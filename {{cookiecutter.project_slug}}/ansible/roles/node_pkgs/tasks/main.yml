@@ -1,0 +1,35 @@
+---
+- name: Install gulp globally
+  shell: source /home/{{deploy_user}}/.nvm/nvm.sh && nvm use {{ node_version }} && npm install -g gulp
+  args:
+    executable: /bin/bash
+    chdir: "{{ app_dir }}"
+  tags: ['install', 'install-node-pkgs', 'install-global-node-pkgs']
+
+- name: Install bower globally
+  shell: source /home/{{deploy_user}}/.nvm/nvm.sh && nvm use {{ node_version }} && npm install -g bower
+  args:
+    executable: /bin/bash
+    chdir: "{{ app_dir }}"
+  tags: ['install', 'install-node-pkgs', 'install-global-node-pkgs']
+
+- name: Install ncu globally
+  shell: source /home/{{deploy_user}}/.nvm/nvm.sh && nvm use {{ node_version }} && npm install -g npm-check-updates
+  args:
+    executable: /bin/bash
+    chdir: "{{ app_dir }}"
+  tags: ['install', 'install-node-pkgs', 'install-global-node-pkgs']
+
+- name: Install npm-install-que globally
+  shell: source /home/{{deploy_user}}/.nvm/nvm.sh && nvm use {{ node_version }} && npm install -g npm-install-que
+  args:
+    executable: /bin/bash
+    chdir: "{{ app_dir }}"
+  tags: ['install', 'install-node-pkgs', 'install-global-node-pkgs']
+
+- name: Install local node packages
+  shell: source /home/{{deploy_user}}/.nvm/nvm.sh && nvm use {{ node_version }} && npm-install-que
+  args:
+    executable: /bin/bash
+    chdir: "{{ app_dir }}"
+  tags: ['install', 'install-node-pkgs', 'install-local-node-pkgs']

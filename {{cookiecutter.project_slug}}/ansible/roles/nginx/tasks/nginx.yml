@@ -1,0 +1,27 @@
+---
+
+- name: Add nginx repository
+  apt_repository: repo=ppa:nginx/stable
+  #when: nginx_apt_use_ppa_repo and ansible_distribution == "Ubuntu"
+
+- name: Install nginx
+  apt: name={{item}}
+  with_items: [ nginx ]
+
+- name: Ensure that Nginx user exists
+  user: name={{nginx_user}} system=yes
+
+- name: Delete default site
+  action: file path={{nginx_default_site}} state=absent
+  when: nginx_delete_default_site
+  notify: restart nginx
+
+- name: Configure nginx
+  template: src=nginx.conf.j2 dest={{nginx_dir}}/nginx.conf
+  notify: restart nginx
+
+- name: Ensure the sites directory exists
+  file: name={{nginx_sites_dir}} state=directory
+
+- name: Ensure that nginx is started
+  service: name=nginx state=started enabled=yes

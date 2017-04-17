@@ -1,0 +1,6 @@
+---
+- name: Install node packages via yarn
+  shell: yarn run bower install
+  args:
+    chdir: "{{ app_dir }}"
+  tags: ['install', 'install-bower-pkgs']
