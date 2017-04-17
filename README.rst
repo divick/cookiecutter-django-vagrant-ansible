@@ -6,15 +6,26 @@ Cookiecutter PyPackage
      :target: https://pyup.io/repos/github/audreyr/cookiecutter-pypackage/
      :alt: Updates
 
-Cookiecutter_ template for a Python package.
+Powered by Cookiecutter_, Cookiecutter Django Vagrant Ansible is a template for
+quickly setting up a Django application for local development using Vagrant,
+local replica of testing infrastructure using Vagrant and deployment to
+testing, staging and production environments using ansible.
 
-* GitHub repo: https://github.com/audreyr/cookiecutter-pypackage/
-* Documentation: https://cookiecutter-pypackage.readthedocs.io/
-* Free software: BSD license
+* GitHub repo: https://github.com/divick/cookiecutter-django-vagrant-ansible
+* Documentation: https://cookiecutter-django-vagrant-ansible.readthedocs.io/
+* Free software: GLPv3 license
 
 Features
 --------
 
+* Support for Django-1.10
+* Provides local setup for development using Vagrant box.
+* Provides local_testing setup for replicating testing environment using
+  Vagrant.
+* Provides testing, staging and production setup for setup on digital ocean
+  droplets or any other hosting provider with root access.
+* Uses ansible for provisioning the setups for development, testing replica
+  on localhost, testing, staging and production environments.
 * Testing setup with ``unittest`` and ``python setup.py test`` or ``py.test``
 * Travis-CI_: Ready for Travis Continuous Integration testing
 * Tox_ testing: Setup to easily test for Python 2.6, 2.7, 3.3, 3.4, 3.5
@@ -23,7 +34,7 @@ Features
 * Auto-release to PyPI_ when you push a new tag to master (optional)
 * Command line interface using Click (optional)
 
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
+.. _Cookiecutter Django Vagrant Ansible: https://github.com/divick/cookiecutter-django-vagrant-ansible
 
 Build Status
 -------------
@@ -44,13 +55,13 @@ Quickstart
 ----------
 
 Install the latest Cookiecutter if you haven't installed it yet (this requires
-Cookiecutter 1.4.0 or higher)::
+Cookiecutter 1.5.0 or higher)::
 
     pip install -U cookiecutter
 
-Generate a Python package project::
+Generate a Django project::
 
-    cookiecutter https://github.com/audreyr/cookiecutter-pypackage.git
+    cookiecutter https://github.com/divick/cookiecutter-django-vagrant-ansible
 
 Then:
 
@@ -67,43 +78,18 @@ Then:
 
 .. _`pip docs for requirements files`: https://pip.pypa.io/en/stable/user_guide/#requirements-files
 
-For more details, see the `cookiecutter-pypackage tutorial`_.
-
-.. _`cookiecutter-pypackage tutorial`: https://cookiecutter-pypackage.readthedocs.io/en/latest/tutorial.html
-
-Not Exactly What You Want?
---------------------------
-
-Don't worry, you have options:
-
-Similar Cookiecutter Templates
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-* `Nekroze/cookiecutter-pypackage`_: A fork of this with a PyTest test runner,
-  strict flake8 checking with Travis/Tox, and some docs and `setup.py` differences.
-
-* `tony/cookiecutter-pypackage-pythonic`_: Fork with py2.7+3.3 optimizations.
-  Flask/Werkzeug-style test runner, ``_compat`` module and module/doc conventions.
-  See ``README.rst`` or the `github comparison view`_ for exhaustive list of
-  additions and modifications.
-
-* `ardydedase/cookiecutter-pypackage`_: A fork with separate requirements files rather than a requirements list in the ``setup.py`` file.
-
-* Also see the `network`_ and `family tree`_ for this repo. (If you find
-  anything that should be listed here, please add it and send a pull request!)
-
 Fork This / Create Your Own
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you have differences in your preferred setup, I encourage you to fork this
-to create your own version. Or create your own; it doesn't strictly have to
-be a fork.
+to create your own version. This project itself has created using
 
-* Once you have your own version working, add it to the Similar Cookiecutter
-  Templates list above with a brief description.
+Cookiecutter_: https://github.com/audreyr/cookiecutter-pypackage/
 
-* It's up to you whether or not to rename your fork/own version. Do whatever
-  you think sounds good.
+customized for development on Django with Vagrant and provisioning / deployment
+using ansible.
+
+https://github.com/divick/cookiecutter-django-vagrant-ansible
 
 Or Submit a Pull Request
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -119,10 +105,4 @@ make my own packaging experience better.
 .. _`pyup.io`: https://pyup.io/
 .. _Bumpversion: https://github.com/peritus/bumpversion
 .. _PyPi: https://pypi.python.org/pypi
-
-.. _`Nekroze/cookiecutter-pypackage`: https://github.com/Nekroze/cookiecutter-pypackage
-.. _`tony/cookiecutter-pypackage-pythonic`: https://github.com/tony/cookiecutter-pypackage-pythonic
 .. _`ardydedase/cookiecutter-pypackage`: https://github.com/ardydedase/cookiecutter-pypackage
-.. _github comparison view: https://github.com/tony/cookiecutter-pypackage-pythonic/compare/audreyr:master...master
-.. _`network`: https://github.com/audreyr/cookiecutter-pypackage/network
-.. _`family tree`: https://github.com/audreyr/cookiecutter-pypackage/network/members
