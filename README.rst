@@ -2,14 +2,17 @@
 Cookiecutter PyPackage
 ======================
 
-.. image:: https://pyup.io/repos/github/audreyr/cookiecutter-pypackage/shield.svg
-     :target: https://pyup.io/repos/github/audreyr/cookiecutter-pypackage/
+.. image:: https://pyup.io/repos/github/divick/cookiecutter-django-vagrant-ansible/shield.svg
+     :target: https://pyup.io/repos/github/divick/cookiecutter-django-vagrant-ansible/
      :alt: Updates
+.. image:: https://pyup.io/repos/github/divick/cookiecutter-django-vagrant-ansible/python-3-shield.svg
+     :target: https://pyup.io/repos/github/divick/cookiecutter-django-vagrant-ansible/
+     :alt: Python 3
 
-Powered by Cookiecutter_, Cookiecutter Django Vagrant Ansible is a template for
-quickly setting up a Django application for local development using Vagrant,
-local replica of testing infrastructure using Vagrant and deployment to
-testing, staging and production environments using ansible.
+Powered by Cookiecutter_, Cookiecutter Django Vagrant Ansible is a commandline
+utility for quickly setting up a Django application for local development using
+Vagrant, local replica of testing infrastructure using Vagrant and deployment
+to testing, staging and production environments using ansible.
 
 * GitHub repo: https://github.com/divick/cookiecutter-django-vagrant-ansible
 * Documentation: https://cookiecutter-django-vagrant-ansible.readthedocs.io/
@@ -44,12 +47,6 @@ Linux:
 .. image:: https://img.shields.io/travis/audreyr/cookiecutter-pypackage.svg
     :target: https://travis-ci.org/audreyr/cookiecutter-pypackage
     :alt: Linux build status on Travis CI
-
-Windows:
-
-.. image:: https://ci.appveyor.com/api/projects/status/github/audreyr/cookiecutter-pypackage?branch=master
-    :target: https://ci.appveyor.com/project/audreyr/cookiecutter-pypackage/branch/master
-    :alt: Windows build status on Appveyor
 
 Quickstart
 ----------
@@ -98,6 +95,7 @@ I also accept pull requests on this, if they're small, atomic, and if they
 make my own packaging experience better.
 
 
+.. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _Travis-CI: http://travis-ci.org/
 .. _Tox: http://testrun.org/tox/
 .. _Sphinx: http://sphinx-doc.org/
