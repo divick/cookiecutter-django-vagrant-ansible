@@ -2,12 +2,18 @@
 Cookiecutter PyPackage
 ======================
 
+Build Status
+-------------
+
 .. image:: https://pyup.io/repos/github/divick/cookiecutter-django-vagrant-ansible/shield.svg
      :target: https://pyup.io/repos/github/divick/cookiecutter-django-vagrant-ansible/
      :alt: Updates
 .. image:: https://pyup.io/repos/github/divick/cookiecutter-django-vagrant-ansible/python-3-shield.svg
      :target: https://pyup.io/repos/github/divick/cookiecutter-django-vagrant-ansible/
      :alt: Python 3
+.. image:: https://travis-ci.org/divick/cookiecutter-django-vagrant-ansible.svg?branch=master
+    :target: https://travis-ci.org/divick/cookiecutter-django-vagrant-ansible
+    :alt: Linux build status on Travis CI
 
 Powered by Cookiecutter_, Cookiecutter Django Vagrant Ansible is a commandline
 utility for quickly setting up a Django application for local development using
@@ -38,15 +44,6 @@ Features
 * Command line interface using Click (optional)
 
 .. _Cookiecutter Django Vagrant Ansible: https://github.com/divick/cookiecutter-django-vagrant-ansible
-
-Build Status
--------------
-
-Linux:
-
-.. image:: https://img.shields.io/travis/audreyr/cookiecutter-pypackage.svg
-    :target: https://travis-ci.org/audreyr/cookiecutter-pypackage
-    :alt: Linux build status on Travis CI
 
 Quickstart
 ----------
