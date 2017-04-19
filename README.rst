@@ -14,6 +14,9 @@ Build Status
 .. image:: https://travis-ci.org/divick/cookiecutter-django-vagrant-ansible.svg?branch=master
     :target: https://travis-ci.org/divick/cookiecutter-django-vagrant-ansible
     :alt: Linux build status on Travis CI
+.. image:: https://codecov.io/gh/divick/cookiecutter-django-vagrant-ansible/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/divick/cookiecutter-django-vagrant-ansible
+    :alt: Code coverage status on CodeCov.io
 
 Powered by Cookiecutter_, Cookiecutter Django Vagrant Ansible is a commandline
 utility for quickly setting up a Django application for local development using
@@ -100,4 +103,3 @@ make my own packaging experience better.
 .. _`pyup.io`: https://pyup.io/
 .. _Bumpversion: https://github.com/peritus/bumpversion
 .. _PyPi: https://pypi.python.org/pypi
-.. _`ardydedase/cookiecutter-pypackage`: https://github.com/ardydedase/cookiecutter-pypackage
